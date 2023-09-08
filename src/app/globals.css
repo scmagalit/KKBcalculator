@@ -2,26 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@layer base {
+    th {
+        @apply border;
+        @apply border-slate-700;
+        @apply px-1;
+    }
+    td {
+        @apply border;
+        @apply border-slate-700;
+        @apply px-1;
+    }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
+/* Color scheme (https://www.color-name.com/tech-blue.color)
+    primary: #2776EA
+    tints: 93BBF5, E9F1FD
+    tones: 547BB5, 777F8B
+    shades: 143B75, 040C17
+*/
