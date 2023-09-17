@@ -5,17 +5,22 @@
 @layer base {
     th {
         @apply border;
-        @apply border-slate-700;
+        @apply border-dark;
         @apply px-1;
+        @apply w-48;
+        @apply h-7;
     }
     td {
         @apply border;
-        @apply border-slate-700;
+        @apply border-dark;
         @apply px-1;
+        @apply w-48;
+        @apply h-7;
     }
 }
 
 /* Color scheme (https://www.color-name.com/tech-blue.color)
+    https://coolors.co/2776ea-93bbf5-e9f1fd-547bb5-777f8b-143b75-040c17
     primary: #2776EA
     tints: 93BBF5, E9F1FD
     tones: 547BB5, 777F8B

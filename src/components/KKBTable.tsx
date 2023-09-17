@@ -4,6 +4,10 @@ import { formatAmount, roundAmount } from '@/utils/currency';
 import { useState } from 'react';
 import { item, contributor } from '@/utils/types';
 import { updateContribAmountsForItem } from '@/utils/func';
+import EditButton from './EditButton';
+import DeleteButton from './DeleteButton';
+import AddItemButton from './AddItemButton';
+import AddContributorButton from './AddContributorButton';
 
 export default function KKBTable() {
     const [items, setItems] = useState<item[]>([
@@ -197,162 +201,195 @@ export default function KKBTable() {
     };
 
     return (
-        <table className="table-auto border-collapse w-full">
-            <thead>
-                <tr>
-                    <th colSpan={4} className="border-r-2">
-                        Itemized Bill
-                    </th>
+        <div className="flex flex-col border">
+            <div className="flex flex-row h-[50vh]">
+                <div className="w-full overflow-x-auto overflow-y-auto">
+                    <table className="table-fixed border-collapse min-w-max">
+                        <thead>
+                            <tr>
+                                <th colSpan={4} className="border-r-2">
+                                    Itemized Bill
+                                </th>
 
-                    {/* Contributions */}
-                    <th colSpan={contributors.length}>Contributions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td className="font-bold">Item</td>
-                    <td className="font-bold">Quantity</td>
-                    <td className="font-bold">Price</td>
-                    <td className="font-bold border-r-2">Total</td>
+                                {/* Contributions */}
+                                <th colSpan={contributors.length}>Contributions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td className="font-bold">Item</td>
+                                <td className="font-bold w-36">Quantity</td>
+                                <td className="font-bold w-36">Price</td>
+                                <td className="font-bold border-r-2">Total</td>
 
-                    {/* Contributions */}
-                    {contributors.map((contributor, contributorIndex) => (
-                        <td key={contributorIndex} className="font-bold">
-                            <div className="flex">
-                                <input
-                                    className="w-full"
-                                    type="text"
-                                    value={contributor.name}
-                                    onChange={(e) =>
-                                        setContributors(
-                                            contributors.map((contributor, index) =>
-                                                contributorIndex == index
-                                                    ? { ...contributor, name: e.target.value }
-                                                    : contributor
-                                            )
-                                        )
-                                    }
-                                    onFocus={(e) => e.target.select()}
-                                />
-                                {contributors.length > 1 && (
-                                    <button
-                                        className="border border-black"
-                                        onClick={() => removeContributor(contributorIndex)}>
-                                        X
-                                    </button>
-                                )}
-                            </div>
-                        </td>
-                    ))}
+                                {/* Contributions */}
+                                {contributors.map((contributor, contributorIndex) => (
+                                    <td key={contributorIndex} className="font-bold">
+                                        <div className="flex">
+                                            <input
+                                                className="w-full"
+                                                type="text"
+                                                value={contributor.name}
+                                                onChange={(e) =>
+                                                    setContributors(
+                                                        contributors.map((contributor, index) =>
+                                                            contributorIndex == index
+                                                                ? {
+                                                                      ...contributor,
+                                                                      name: e.target.value
+                                                                  }
+                                                                : contributor
+                                                        )
+                                                    )
+                                                }
+                                                onFocus={(e) => e.target.select()}
+                                            />
+                                            {/* <EditButton
+                                                onClick={() => {
+                                                    return;
+                                                }}
+                                                title="Edit contributor name"
+                                            /> */}
 
-                    {/* Add contributor*/}
-                    <td rowSpan={items.length + 1} className="font-bold text-lg text-center">
-                        <button onClick={addContributor}>+</button>
-                    </td>
-                </tr>
+                                            {contributors.length > 1 && (
+                                                <DeleteButton
+                                                    onClick={() =>
+                                                        removeContributor(contributorIndex)
+                                                    }
+                                                    title="Delete contributor"
+                                                />
+                                            )}
+                                        </div>
+                                    </td>
+                                ))}
+                            </tr>
 
-                {/* Item rows and contributions */}
-                {items.map((item, itemIndex) => (
-                    <tr key={itemIndex}>
-                        <td>
-                            <div className="flex">
-                                <input
-                                    className="w-full"
-                                    type="text"
-                                    value={item.name}
-                                    onChange={(e) =>
-                                        setItems(
-                                            items.map((item, index) =>
-                                                itemIndex == index
-                                                    ? { ...item, name: e.target.value }
-                                                    : item
-                                            )
-                                        )
-                                    }
-                                    onFocus={(e) => e.target.select()}
-                                />
-                                {items.length > 1 && (
-                                    <button
-                                        className="border border-black"
-                                        onClick={() => removeItem(itemIndex)}>
-                                        X
-                                    </button>
-                                )}
-                            </div>
-                        </td>
-                        <td>
-                            <input
-                                className="w-full text-right"
-                                type="text"
-                                value={item.quantityDisplay}
-                                onChange={(e) =>
-                                    updateItemQuantityDisplay(itemIndex, e.target.value)
-                                }
-                                onBlur={() => updateItemQuantity(itemIndex, item.quantityDisplay)}
-                                onFocus={(e) => e.target.select()}
-                            />
-                        </td>
-                        <td>
-                            <input
-                                className="w-full text-right"
-                                type="text"
-                                value={item.priceDisplay}
-                                onChange={(e) => updateItemPriceDisplay(itemIndex, e.target.value)}
-                                onBlur={() => updateItemPrice(itemIndex, item.priceDisplay)}
-                                onFocus={(e) => e.target.select()}
-                            />
-                        </td>
-                        <td className="text-right border-r-2">
-                            {formatAmount(roundAmount(item.quantity * item.price))}
-                        </td>
+                            {/* Item rows and contributions */}
+                            {items.map((item, itemIndex) => (
+                                <tr key={itemIndex}>
+                                    <td>
+                                        <div className="flex">
+                                            <input
+                                                className="w-full"
+                                                type="text"
+                                                value={item.name}
+                                                onChange={(e) =>
+                                                    setItems(
+                                                        items.map((item, index) =>
+                                                            itemIndex == index
+                                                                ? { ...item, name: e.target.value }
+                                                                : item
+                                                        )
+                                                    )
+                                                }
+                                                onFocus={(e) => e.target.select()}
+                                            />
+                                            {/* <EditButton
+                                                onClick={() => {
+                                                    return;
+                                                }}
+                                                title="Edit item name"
+                                            /> */}
 
-                        {/* Contributions */}
-                        {contributors.map((contributor, contributorIndex) => (
-                            <td key={contributorIndex}>
-                                <button
-                                    className="w-full text-right"
-                                    onClick={() => updateContribution(itemIndex, contributorIndex)}>
+                                            {items.length > 1 && (
+                                                <DeleteButton
+                                                    onClick={() => removeItem(itemIndex)}
+                                                    title="Delete item"
+                                                />
+                                            )}
+                                        </div>
+                                    </td>
+                                    <td className=" w-36">
+                                        <input
+                                            className="w-full text-right"
+                                            type="text"
+                                            value={item.quantityDisplay}
+                                            onChange={(e) =>
+                                                updateItemQuantityDisplay(itemIndex, e.target.value)
+                                            }
+                                            onBlur={() =>
+                                                updateItemQuantity(itemIndex, item.quantityDisplay)
+                                            }
+                                            onFocus={(e) => e.target.select()}
+                                        />
+                                    </td>
+                                    <td className=" w-36">
+                                        <input
+                                            className="w-full text-right"
+                                            type="text"
+                                            value={item.priceDisplay}
+                                            onChange={(e) =>
+                                                updateItemPriceDisplay(itemIndex, e.target.value)
+                                            }
+                                            onBlur={() =>
+                                                updateItemPrice(itemIndex, item.priceDisplay)
+                                            }
+                                            onFocus={(e) => e.target.select()}
+                                        />
+                                    </td>
+                                    <td className="text-right border-r-2">
+                                        {formatAmount(roundAmount(item.quantity * item.price))}
+                                    </td>
+
+                                    {/* Contributions */}
+                                    {contributors.map((contributor, contributorIndex) => (
+                                        <td key={contributorIndex}>
+                                            <button
+                                                className="w-full text-right"
+                                                onClick={() =>
+                                                    updateContribution(itemIndex, contributorIndex)
+                                                }>
+                                                {formatAmount(
+                                                    roundAmount(
+                                                        contributor.contributions[itemIndex]
+                                                    )
+                                                )}
+                                            </button>
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+
+                        <tfoot>
+                            {/* Totals */}
+                            <tr>
+                                <td colSpan={3} className="font-bold">
+                                    Total Amount
+                                </td>
+                                <td className="border-r-2 text-right">
                                     {formatAmount(
-                                        roundAmount(contributor.contributions[itemIndex])
+                                        items.reduce(
+                                            (totalAmount, item) =>
+                                                totalAmount + item.quantity * item.price,
+                                            0
+                                        )
                                     )}
-                                </button>
-                            </td>
-                        ))}
-                    </tr>
-                ))}
-            </tbody>
-
-            <tfoot>
-                {/* Add item*/}
-                <tr>
-                    <td colSpan={4 + contributors.length} className="font-bold text-lg text-center">
-                        <button onClick={addItem}>+</button>
-                    </td>
-                </tr>
-                {/* Totals */}
-                <tr>
-                    <td colSpan={3} className="font-bold">
-                        Total Amount
-                    </td>
-                    <td className="border-r-2">
-                        {formatAmount(
-                            items.reduce(
-                                (totalAmount, item) => totalAmount + item.quantity * item.price,
-                                0
-                            )
-                        )}
-                    </td>
-                    {contributors.map((contributor, contributorIndex) => (
-                        <td key={contributorIndex} className="font-bold text-right">
-                            {formatAmount(
-                                contributor.contributions.reduce(
-                                    (totalAmount, contribution) => totalAmount + contribution
-                                )
-                            )}
-                        </td>
-                    ))}
-                </tr>
-            </tfoot>
-        </table>
+                                </td>
+                                {contributors.map((contributor, contributorIndex) => (
+                                    <td key={contributorIndex} className="font-bold text-right">
+                                        {formatAmount(
+                                            contributor.contributions.reduce(
+                                                (totalAmount, contribution) =>
+                                                    totalAmount + contribution
+                                            )
+                                        )}
+                                    </td>
+                                ))}
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div className="flex flex-col border w-8 items-center">
+                    <AddContributorButton onClick={addContributor} title="Add contributor" />
+                </div>
+            </div>
+            <div className="flex flex-row h-8">
+                <div className="flex items-center w-full border">
+                    <AddItemButton onClick={addItem} title="Add item" />
+                </div>
+                <div className="w-8 border"></div>
+            </div>
+        </div>
     );
 }
