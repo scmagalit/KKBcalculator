@@ -244,12 +244,6 @@ export default function KKBTable() {
                                                 }
                                                 onFocus={(e) => e.target.select()}
                                             />
-                                            {/* <EditButton
-                                                onClick={() => {
-                                                    return;
-                                                }}
-                                                title="Edit contributor name"
-                                            /> */}
 
                                             {contributors.length > 1 && (
                                                 <DeleteButton
@@ -284,12 +278,6 @@ export default function KKBTable() {
                                                 }
                                                 onFocus={(e) => e.target.select()}
                                             />
-                                            {/* <EditButton
-                                                onClick={() => {
-                                                    return;
-                                                }}
-                                                title="Edit item name"
-                                            /> */}
 
                                             {items.length > 1 && (
                                                 <DeleteButton
@@ -327,13 +315,19 @@ export default function KKBTable() {
                                             onFocus={(e) => e.target.select()}
                                         />
                                     </td>
-                                    <td className="text-right border-r-2">
+                                    <td className="text-right border-r-2 bg-light">
                                         {formatAmount(roundAmount(item.quantity * item.price))}
                                     </td>
 
                                     {/* Contributions */}
                                     {contributors.map((contributor, contributorIndex) => (
-                                        <td key={contributorIndex}>
+                                        <td
+                                            key={contributorIndex}
+                                            className={
+                                                contributor.contributions[itemIndex] != 0
+                                                    ? 'bg-light'
+                                                    : ''
+                                            }>
                                             <button
                                                 className="w-full text-right"
                                                 onClick={() =>
@@ -357,7 +351,7 @@ export default function KKBTable() {
                                 <td colSpan={3} className="font-bold">
                                     Total Amount
                                 </td>
-                                <td className="border-r-2 text-right">
+                                <td className="border-r-2 text-right font-bold">
                                     {formatAmount(
                                         items.reduce(
                                             (totalAmount, item) =>
@@ -380,12 +374,12 @@ export default function KKBTable() {
                         </tfoot>
                     </table>
                 </div>
-                <div className="flex flex-col border w-8 items-center">
+                <div className="flex flex-col border w-8 items-center hover:bg-primary">
                     <AddContributorButton onClick={addContributor} title="Add contributor" />
                 </div>
             </div>
             <div className="flex flex-row h-8">
-                <div className="flex items-center w-full border">
+                <div className="flex items-center w-full border hover:bg-primary">
                     <AddItemButton onClick={addItem} title="Add item" />
                 </div>
                 <div className="w-8 border"></div>
